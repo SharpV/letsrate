@@ -40,7 +40,7 @@ module Letsrate
   def can_rate?(user, dimension=nil)
     user.ratings_given.where(dimension: dimension, rateable_id: id, rateable_type: self.class.name).size.zero?
   end
-
+  
   def rates(dimension=nil)
     dimension ? self.send("#{dimension}_rates") : rates_without_dimension
   end

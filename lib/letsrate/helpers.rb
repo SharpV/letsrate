@@ -1,21 +1,25 @@
 module Helpers
   def rating_for(rateable_obj, dimension=nil, options={})
 
+    id = options[:id] || '#stars'
+
     cached_average = rateable_obj.average dimension
 
     avg = cached_average ? cached_average.avg : 0
 
     star = options[:star] || 5
 
+    target = options[:target] || '#hint'
+
     disable_after_rate = options[:disable_after_rate] || true
 
-    readonly = !(current_user && rateable_obj.can_rate?(current_user, dimension))
+    readonly = options[:readonly] || false
 
-    content_tag :div, '', "data-dimension" => dimension, :class => "star", "data-rating" => avg,
+    content_tag :div, '', id: id, "data-dimension" => dimension, :class => "star", "data-rating" => avg,
                 "data-id" => rateable_obj.id, "data-classname" => rateable_obj.class.name,
                 "data-disable-after-rate" => disable_after_rate,
                 "data-readonly" => readonly,
-                "data-star-count" => star
+                "data-star-count" => star, "data-target" => target
   end
   
   def rating_for_user(rateable_obj, rating_user, dimension = nil, options = {})
